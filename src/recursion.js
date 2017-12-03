@@ -26,17 +26,16 @@ var sum = function(array) {
 // 3. Sum all numbers in an array containing nested arrays.
 // arraySum([1,[2,3],[[4]],5]); // 15
 var arraySum = function(array) {
-  if( array.length === 0 ){
-    return 0;
-  } else {
-    var element = array.slice(1);
-    if( Array.isArray(element) ){
-      return arraySum(element);
-    } else {
-      return array[0] + arraySum(element);
+  var sum = 0;
+  for(var i = 0; i < array.length; i++){
+    if( array[i] instanceof Array ){ 
+      sum += arraySum(array[i]);
     }
+    if( array[i] === Math.round(array[i]) ){
+      sum += array[i];
+    }   
   }
-  
+ return sum;
 };
 
 // 4. Check if a number is even.
@@ -77,7 +76,27 @@ var sumBelow = function(n) {
 // 6. Get the integers within a range (x, y).
 // range(2,9); // [3,4,5,6,7,8]
 var range = function(x, y) {
-  
+  // var arr = [];
+  // var diff = Math.abs(y) - Math.abs(x);
+  // if( arr.length === diff - 1){
+  //   return arr;
+  // } else {
+  //   var result = range(x, y).concat(y - 1);
+  //   return arr.push(result);
+  // }
+  // base case
+  var arr = []
+  if (y - x === 1 || y - x === 0) {
+    return arr;
+  }
+
+  // recursive case
+  if( y > x ){
+    y = y - 1;
+  } else {
+    y = y + 1;
+  }
+  return y === x ? [] : range(x,y).concat(y); 
 };
 
 // 7. Compute the exponent of a number.
@@ -107,11 +126,21 @@ var exponent = function(base, exp) {
 // powerOfTwo(16); // true
 // powerOfTwo(10); // false
 var powerOfTwo = function(n) {
-  if( n === 1) return true;
+  //base cases
+  if( n === 1 ){ return true; }
+  if( n === 0 || n % 2 === 1 ){ return false; }
+  
+  //recursive cases
+  return powerOfTwo(n/2);
 };
 
 // 9. Write a function that reverses a string.
 var reverse = function(string) {
+  if (string === "") {
+        return "";
+    } else {
+        return reverse(string.substr(1)) + string.charAt(0);
+    }
 };
 
 // 10. Write a function that determines if a string is a palindrome.
@@ -178,6 +207,12 @@ var fizzBuzz = function(n) {
 // countOccurrence([2,7,4,4,1,4], 4) // 3
 // countOccurrence([2,'banana',4,4,1,'banana'], 'banana') // 2
 var countOccurrence = function(array, value) {
+  // base case
+  if (array.length === 0) { return 0; } 
+
+  // recursive case
+  var increment = array[0] === value ? 1 : 0;
+  return increment + countOccurrence(array.slice(1), value); 
 };
 
 // 21. Write a recursive version of map.
